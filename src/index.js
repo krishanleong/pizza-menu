@@ -49,18 +49,40 @@ const pizzaData = [
 function App() {
   return (
     <div>
-      <h1>Hello React</h1>
+      <Header />
+      <Menu />
+      <Footer />
+    </div>
+  );
+}
+
+function Header() {
+  return <h1 className="header">- FAST REACT PIZZA CO. -</h1>;
+}
+
+function Menu() {
+  return (
+    <div>
+      <h2>Our Menu</h2>
+      <Pizza />
       <Pizza />
     </div>
   );
 }
 
+function Footer() {
+  return (
+    <footer>{new Date().toLocaleTimeString()} We're currently open</footer>
+  );
+  // return React.createElement("footer", null, "We're currently open");
+}
+
 function Pizza() {
   return (
     <div>
+      <img src="pizzas/salamino.jpg" alt="pizza" />
       <h2>Pizza Salamino</h2>
       <p>Tomato, mozarella, and pepperoni</p>
-      <img src="pizzas/salamino.jpg" alt="pizza" />
     </div>
   );
 }
