@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./index.css";
 
 const pizzaData = [
   {
@@ -48,41 +49,93 @@ const pizzaData = [
 
 function App() {
   return (
-    <div>
-      <Header />
-      <Menu />
-      <Footer />
-    </div>
+    <>
+      <div className="container">
+        <Header />
+        <Menu />
+        <Footer />
+      </div>
+    </>
   );
 }
 
 function Header() {
-  return <h1 className="header">- FAST REACT PIZZA CO. -</h1>;
+  return (
+    <header className="header">
+      <h1>FAST REACT PIZZA CO.</h1>
+    </header>
+  );
 }
 
 function Menu() {
+  let pizzas = pizzaData;
+  // pizzas = [];
   return (
-    <div>
+    <main className="menu">
       <h2>Our Menu</h2>
-      <Pizza />
-      <Pizza />
-    </div>
+      {pizzas.length > 0 ? (
+        <>
+          <p>
+            Authentic Italioan cuisine. 6 creative dishes to choose from. all
+            from our stone over, all organic, all delicious.
+          </p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+            ;
+          </ul>
+        </>
+      ) : (
+        <p>We're still working on our menu.</p>
+      )}
+      ;
+    </main>
   );
 }
 
 function Footer() {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 23;
+  let isOpen = openHour >= 12 && closeHour <= 23;
+
   return (
-    <footer>{new Date().toLocaleTimeString()} We're currently open</footer>
+    <footer>
+      <Order closeHour={closeHour} openHour={openHour} isOpen={isOpen} />
+      <button className="btn">Order</button>
+    </footer>
   );
   // return React.createElement("footer", null, "We're currently open");
 }
 
-function Pizza() {
+function Pizza(props) {
+  console.log(props.name, props.soldOut);
+
+  // if (props.pizzaObj.soldOut === true) return;
+
+  return (
+    <div className={`pizza ${props.pizzaObj.soldOut && "sold-out"}`}>
+      <img src={props.pizzaObj.photoName} alt="pizza" />
+      <div>
+        <h3>{props.pizzaObj.name}</h3>
+        <p>{props.pizzaObj.ingredients}</p>
+        <span>
+          {props.pizzaObj.soldOut === false ? props.pizzaObj.price : "SOLD OUT"}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function Order(props) {
   return (
     <div>
-      <img src="pizzas/salamino.jpg" alt="pizza" />
-      <h2>Pizza Salamino</h2>
-      <p>Tomato, mozarella, and pepperoni</p>
+      <p>
+        {props.isOpen
+          ? `Open till ${props.closeHour}:00pm`
+          : `Closed until ${props.openHour}:00pm.`}
+      </p>
     </div>
   );
 }
